@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.item-button button {
+  width: 150px;
+  color: white;
+  background-color: black;
+  margin-top: 10px;
+  margin-left: 30px;
+}
+
+.item-button button:hover {
+  background-color: black;
+  color: white;
+}
+
+.productlist {
+  padding-top: 7em;
+  padding-left: 7em;
+}
+
+.insideform {
+  padding-right: 60%;
+}
+
+.outsideform {
+  padding-top: 5em;
+  padding-left: 40%;
+}

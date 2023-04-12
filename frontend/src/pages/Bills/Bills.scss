@@ -1,0 +1,16 @@
+::-webkit-scrollbar {
+  display: none;
+}
+.home {
+  display: flex;
+  overflow-y: hidden;
+  position: sticky !important;
+  .homeContainer {
+    flex: 6;
+    .nav {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 0;
+    }
+  }
+}

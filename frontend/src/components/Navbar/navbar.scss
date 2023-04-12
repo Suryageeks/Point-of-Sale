@@ -1,0 +1,19 @@
+.nav {
+  position: fixed;
+  background-color: rgb(254, 254, 254);
+  height: 4em;
+  width: 100%;
+  margin-left: 6rem;
+  top: 0;
+  z-index: 9999;
+
+  .insidebar {
+    .textbox {
+      padding-left: 85em;
+      padding-top: 1.5em;
+      color: white;
+      font-weight: bold;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+}

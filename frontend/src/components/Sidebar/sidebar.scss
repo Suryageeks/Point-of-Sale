@@ -1,0 +1,26 @@
+.sidebar {
+  width: 6em;
+  background-color: green;
+  top: 0;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 auto;
+  border-radius: 0;
+  overflow-y: hidden;
+  position: fixed;
+  min-height: 100vh;
+
+  ul {
+    margin-top: 6rem;
+    padding-bottom: 5rem;
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+
+    li {
+      margin-top: 4em;
+      list-style-type: none;
+      list-style-position: inside;
+    }
+  }
+}
