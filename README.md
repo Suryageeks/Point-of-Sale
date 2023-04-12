@@ -1,7 +1,3 @@
-# Point-of-Sale
-A point of sale application(POS System) built using MERN Stack
-
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
