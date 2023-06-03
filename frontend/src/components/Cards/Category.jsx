@@ -14,16 +14,20 @@ const Category = ({ setSelectedCategory }) => {
       name: "ICECREAM",
     },
     {
-      name: "STARTER",
+      name: "STARTERS",
     },
   ];
+
+  const handleClick = (categoryName) => {
+    setSelectedCategory(categoryName);
+  };
 
   return (
     <Container>
       <Row>
         <Col
           style={{
-            marginTop: "6em",
+            marginTop: "8em",
             display: "flex",
             marginLeft: "12em",
             justifyContent: "space-between",
@@ -37,7 +41,7 @@ const Category = ({ setSelectedCategory }) => {
                 backgroundColor: "#D89696",
                 cursor: "pointer",
               }}
-              onClick={() => setSelectedCategory(category.name)}
+              onClick={() => handleClick(category.name)}
             >
               <Card.Body style={{ color: "#000000" }}>
                 <Card.Title className="text-center fs-4">

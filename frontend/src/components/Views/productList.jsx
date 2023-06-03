@@ -30,9 +30,19 @@ const ProductList = () => {
       allProduct();
     }
     return () => {
+      isMount = false;
       effectRun.current = true;
     };
   }, []);
+
+  const filteredItem = itemData.filter(
+    (item) => item.category.toLowerCase() === selectCategory.toLowerCase()
+  );
+
+  useEffect(() => {
+    console.log("Selected Category:", selectCategory);
+    console.log("Filtered Items:", filteredItem);
+  }, [selectCategory, filteredItem]);
 
   return (
     <>
@@ -40,21 +50,20 @@ const ProductList = () => {
         <Category setSelectedCategory={setSelectedCategory} />
 
         <Row style={{ paddingTop: "8em" }}>
-          {itemData
-            .filter((item) => item.category === selectCategory)
-            .map((prod, i) => (
-              <Col
-                style={{
-                  marginRight: "5em",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-                key={prod.id}
-              >
-                {/* <div key={uuidv4()}>{prod.name}</div> */}
-                <Itemlist prod={prod} />
-              </Col>
-            ))}
+          {filteredItem.map((prod) => (
+            <Col
+              style={{
+                marginRight: "1.5em",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+              key={prod.id}
+              sm={3}
+            >
+              {/* <div key={i}>{prod.name}</div> */}
+              <Itemlist prod={prod} />
+            </Col>
+          ))}
         </Row>
       </Container>
     </>

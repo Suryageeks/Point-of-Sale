@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Layout8.scss";
+import ReactPaginate from "react-paginate";
 
 const Layout8 = () => {
   const [data, setData] = useState([]);
+  const [currentBills, setCurrentBills] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [billsOffset, setBillsOffset] = useState(0);
 
   useEffect(() => {
     axios.get("/api/v1/getBill").then((data) => {
@@ -11,6 +15,17 @@ const Layout8 = () => {
       console.log(data.data.invoice);
     });
   }, []);
+
+  useEffect(() => {
+    const endOffset = billsOffset + 7;
+    setCurrentBills(data.slice(billsOffset, endOffset));
+    setPageCount(Math.ceil(data.length / 7));
+  }, [data, billsOffset]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 7) % data.length;
+    setBillsOffset(newOffset);
+  };
 
   return (
     <>
@@ -24,6 +39,7 @@ const Layout8 = () => {
         >
           INVOICE
         </h2>
+
         <div className="outerTable">
           <table>
             <thead>
@@ -36,8 +52,8 @@ const Layout8 = () => {
               </tr>
             </thead>
             <tbody>
-              {data.length !== 0 ? (
-                data.map((prod, i) => (
+              {currentBills && currentBills.length !== 0 ? (
+                currentBills.map((prod, i) => (
                   <tr key={i}>
                     <td>{prod.customerName}</td>
                     <td>{prod.customerNumber}</td>
@@ -53,12 +69,43 @@ const Layout8 = () => {
                   </tr>
                 ))
               ) : (
-                <p>
-                  <h6>LOADING....</h6>
-                </p>
+                <tr>
+                  <td colSpan={5}>
+                    <h6>LOADING....</h6>
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginLeft: "7rem",
+            marginTop: "-1.25rem",
+            position: "sticky",
+          }}
+        >
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={10}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            containerClassName={"pagination"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
         </div>
       </div>
     </>

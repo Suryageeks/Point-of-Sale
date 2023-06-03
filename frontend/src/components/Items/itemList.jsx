@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 const ItemList = ({ prod }) => {
@@ -27,11 +26,17 @@ const ItemList = ({ prod }) => {
           src={prod.image}
           alt={prod.name}
           width={222}
-          height={120}
+          height={160}
         />
         <Card.Body>
-          <Card.Title key={uuidv4()}>{prod.name}</Card.Title>
-          <div className="item-button">
+          <Card.Title
+            key={uuidv4()}
+            style={{ fontSize: "1.5em" }}
+            className="text-center"
+          >
+            {prod.name}
+          </Card.Title>
+          <div className="item-button" style={{ marginLeft: "-0.5em" }}>
             <Button onClick={() => handleCart()}>Add to Cart</Button>
           </div>
         </Card.Body>

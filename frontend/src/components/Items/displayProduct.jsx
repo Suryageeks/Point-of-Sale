@@ -3,11 +3,15 @@ import axios from "axios";
 import "./display.scss";
 import Button from "react-bootstrap/esm/Button";
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 
 const DisplayProduct = () => {
   const [itemData, setItemData] = useState([]);
   const effectRun = useRef(false);
   const [filterData, setFilterData] = useState([]);
+  const [currentBills, setCurrentBills] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  const [billsOffset, setBillsOffset] = useState(0);
 
   // const dispatch = useDispatch();
 
@@ -44,6 +48,17 @@ const DisplayProduct = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const endOffset = billsOffset + 4;
+    setCurrentBills(itemData.slice(billsOffset, endOffset));
+    setPageCount(Math.ceil(itemData.length / 4));
+  }, [itemData, billsOffset]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 4) % itemData.length;
+    setBillsOffset(newOffset);
+  };
+
   return (
     <div className="productlist">
       <div style={{ marginTop: "-3.5rem" }}>
@@ -68,8 +83,8 @@ const DisplayProduct = () => {
               </tr>
             </thead>
             <tbody>
-              {itemData.length !== 0 ? (
-                itemData.map((prod, i) => (
+              {currentBills && currentBills.length !== 0 ? (
+                currentBills.map((prod, i) => (
                   <tr key={i}>
                     <td>{prod.name}</td>
                     <td>{prod.price}</td>
@@ -104,6 +119,34 @@ const DisplayProduct = () => {
               )}
             </tbody>
           </table>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginLeft: "15rem",
+            marginTop: "-1.25rem",
+          }}
+        >
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={10}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            containerClassName={"pagination"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
         </div>
         <span style={{ marginLeft: "87.3rem" }}>
           <Link to="/add">
