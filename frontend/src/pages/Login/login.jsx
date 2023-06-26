@@ -5,7 +5,6 @@ import "./login.scss";
 const Login = () => {
   return (
     <div className="outer">
-      Login
       <div className="inner">
         <Layout7 />
       </div>

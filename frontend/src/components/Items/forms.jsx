@@ -25,8 +25,6 @@ const Forms = () => {
   };
 
   useEffect(() => {
-    //const abortController = new AbortController();
-
     if (effectRun.current === false) {
       allProduct();
     }
@@ -36,7 +34,6 @@ const Forms = () => {
   }, []);
 
   useEffect(() => {
-    //const abortController = new AbortController();
     let isMount = true;
     if (effectRun.current === false) {
       const getCategory = async () => {
@@ -70,52 +67,81 @@ const Forms = () => {
   };
 
   return (
-    <div className="outsideform">
-      <div style={{ paddingBottom: "1em" }}>
-        <b>ADD PRODUCT</b>
-      </div>
-      <div className="insideform">
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter Product Name"
-              name="name"
-            />
-          </Form.Group>
+    <div
+      className="container d-flex justify-content-center align-items-center vh-100"
+      style={{ paddingBottom: "10rem" }}
+    >
+      <div className="row pt-5 position-relative ">
+        <div
+          style={{ paddingBottom: "5em" }}
+          className="col-md-3 bg-white p-5 flex-fill rounded shadow-lg "
+        >
+          <p className="h3 text-center">ADD PRODUCT</p>
+          <div
+            className="insideform"
+            style={{ width: "25rem", paddingTop: "5%" }}
+          >
+            <Form onSubmit={handleSubmit} style={{ width: "25rem" }}>
+              <Form.Group className="mb-3">
+                <Form.Label className="h5">Name</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Enter Product Name"
+                  name="name"
+                />
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Price</Form.Label>
-            <Form.Control type="number" placeholder="Price" name="price" />
-          </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="h5">Price</Form.Label>
+                <Form.Control type="number" placeholder="Price" name="price" />
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Category</Form.Label>
-            <Form.Control as="select" placeholder="Category" name="category">
-              <option name="Icecream" value="Icecream">
-                Icecream
-              </option>
-              <option name="Drinks" value="Drinks">
-                Drinks
-              </option>
-              <option name="Starters" value="Starters">
-                Starters
-              </option>
-            </Form.Control>
-          </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="h5">Category</Form.Label>
+                <Form.Control
+                  as="select"
+                  placeholder="Category"
+                  name="category"
+                >
+                  <option name="Icecream" value="Icecream">
+                    Icecream
+                  </option>
+                  <option name="Drinks" value="Drinks">
+                    Drinks
+                  </option>
+                  <option name="Starters" value="Starters">
+                    Starters
+                  </option>
+                </Form.Control>
+              </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Image URL</Form.Label>
-            <Form.Control type="text" placeholder="Image URL" name="image" />
-          </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label className="h5">Image Url</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Image URL"
+                  name="image"
+                />
+              </Form.Group>
 
-          <span style={{}}>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </span>
-        </Form>
+              <div className="d-flex justify-content-center pt-1">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="h5"
+                  style={{
+                    width: "20rem",
+                    height: "2.7rem",
+                    backgroundColor: "#A084DC",
+                    border: 0,
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </div>
+        </div>
       </div>
     </div>
   );

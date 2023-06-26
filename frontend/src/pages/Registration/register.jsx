@@ -5,7 +5,6 @@ import "./Register.scss";
 const Register = () => {
   return (
     <div className="outer">
-      <h3>Register</h3>
       <div className="inner">
         <Layout6 />
       </div>

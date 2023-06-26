@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Layout8.scss";
 import ReactPaginate from "react-paginate";
+import titleCase from "../../util/titleCase";
 
 const Layout8 = () => {
   const [data, setData] = useState([]);
@@ -55,7 +56,7 @@ const Layout8 = () => {
               {currentBills && currentBills.length !== 0 ? (
                 currentBills.map((prod, i) => (
                   <tr key={i}>
-                    <td>{prod.customerName}</td>
+                    <td>{titleCase(prod.customerName)}</td>
                     <td>{prod.customerNumber}</td>
                     <td>{prod.totalAmt}</td>
                     <td>{prod.paymentMethod}</td>

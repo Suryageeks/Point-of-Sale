@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./product.css";
 
 import Category from "../Cards/Category";
 import Itemlist from "../Items/itemList";
@@ -46,26 +47,38 @@ const ProductList = () => {
 
   return (
     <>
-      <Container>
-        <Category setSelectedCategory={setSelectedCategory} />
-
-        <Row style={{ paddingTop: "8em" }}>
-          {filteredItem.map((prod) => (
-            <Col
+      <div className="page-wrapper">
+        <Container>
+          <Category setSelectedCategory={setSelectedCategory} />
+          <div
+            className="vertical-scroll "
+            style={{
+              paddingBottom: "2rem",
+              marginTop: "2rem",
+              position: "relative",
+            }}
+          >
+            <Row
               style={{
-                marginRight: "1.5em",
-                display: "flex",
-                justifyContent: "space-between",
+                paddingTop: "5rem",
               }}
-              key={prod.id}
-              sm={3}
             >
-              {/* <div key={i}>{prod.name}</div> */}
-              <Itemlist prod={prod} />
-            </Col>
-          ))}
-        </Row>
-      </Container>
+              {filteredItem.map((prod) => (
+                <Col
+                  style={{
+                    marginTop: "1em",
+                  }}
+                  key={prod.id}
+                  md={3}
+                >
+                  {/* <div key={i}>{prod.name}</div> */}
+                  <Itemlist prod={prod} />
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </Container>
+      </div>
     </>
   );
 };

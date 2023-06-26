@@ -26,3 +26,22 @@ exports.getBill = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.getOneBill = async (req, res) => {
+  try {
+    const onebill = await Bills.findById(req.params.id);
+
+    if (!onebill) {
+      return res.status(400).json({
+        msg: "Bill Not Found",
+      });
+    }
+
+    return res.status(200).json({
+      onebill,
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

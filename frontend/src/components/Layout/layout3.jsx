@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./layout.scss";
 import "./layout3.scss";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,12 +7,14 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
 
 import {
   AiFillDelete,
   AiFillPlusSquare,
   AiFillMinusSquare,
 } from "react-icons/ai";
+import titleCase from "../../util/titleCase";
 
 const Layout3 = () => {
   const [subtotal, setSubtotal] = useState(0);
@@ -28,6 +30,7 @@ const Layout3 = () => {
   const [gross, setGross] = useState();
   const [total, setTotal] = useState();
   const [paymentmode, setPaymentmode] = useState();
+  const componentRef = useRef();
 
   const { cartItems } = useSelector((state) => state.rootReducer);
   const dispatch = useDispatch();
@@ -59,6 +62,27 @@ const Layout3 = () => {
       payload: product,
     });
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    pageStyle: `
+    @page {
+      size: auto;
+      margin: 0;
+      width: 75%;
+    }
+    @media print {
+      body {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        padding-top:20%;
+        
+      }
+    }
+  `,
+  });
 
   useEffect(() => {
     let sum = 0;
@@ -130,17 +154,17 @@ const Layout3 = () => {
               {cartItems.length !== 0 ? (
                 cartItems.map((prod, i) => (
                   <tr key={i}>
-                    <td>{prod.name}</td>
+                    <td>{titleCase(prod.name)}</td>
                     <td>{prod.price}</td>
                     <td>
                       <div>
                         <AiFillPlusSquare
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", width: 20, height: 20 }}
                           onClick={() => handleIncrement(prod._id)}
                         />
                         <b>{prod.quantity}</b>
                         <AiFillMinusSquare
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", width: 20, height: 20 }}
                           onClick={() => handleDecrement(prod._id)}
                         />
                       </div>
@@ -149,8 +173,8 @@ const Layout3 = () => {
                       <img
                         src={prod.image}
                         alt={prod.name}
-                        width="60"
-                        height="60"
+                        width="100"
+                        height="65"
                       />
                     </td>
                     <td>
@@ -158,7 +182,7 @@ const Layout3 = () => {
                         style={{ display: "flex", justifyContent: "center" }}
                       >
                         <AiFillDelete
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", width: 35, height: 35 }}
                           onClick={() => handleDelete(prod._id)}
                         />
                       </div>
@@ -173,90 +197,115 @@ const Layout3 = () => {
             </tbody>
           </table>
         </div>
-        <Button className="subtotal" onClick={handleShow}>
+        <Button
+          className="subtotal"
+          onClick={handleShow}
+          style={{
+            backgroundColor: "#A084DC",
+            border: 0,
+            width: "10rem",
+            height: "2.7rem",
+            marginLeft: "88%",
+          }}
+        >
           Invoice
         </Button>
         <Modal show={show} onHide={handleClose} centered>
           <Modal.Header closeButton>
-            <Modal.Title>Generate Invoice</Modal.Title>
+            <Modal.Title>Invoice</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="modalTable">
-              <table>
-                <tr>
-                  <th>Items</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
-                </tr>
-                {cartItems.map((prod) => (
-                  <tr key={prod.id} style={{ marginRight: "1em" }}>
-                    <td>{prod.name}</td>
-                    <td>{prod.price}</td>
-                    <td>{prod.quantity}</td>
+            <div ref={componentRef}>
+              <div className="modalTable">
+                <table>
+                  <tr>
+                    <th>Items</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
                   </tr>
-                ))}
-              </table>
-            </div>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Customer Name</Form.Label>
-                <Form.Control
-                  type="name"
-                  placeholder="Enter Customer Name"
-                  name="customerName"
-                  onChange={(e) => setCustname(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Customer Number</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Mobile Number"
-                  name="customerNumber"
-                  onChange={(e) => setCustnumber(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Payment Mode</Form.Label>
-                <Form.Control
-                  as="select"
-                  placeholder="Payment Mode"
-                  name="paymentMethod"
-                  onChange={(e) => setPaymentmode(e.target.value)}
-                >
-                  <option name="Cash" value="Cash">
-                    Cash
-                  </option>
-                  <option name="Card" value="Card">
-                    Card
-                  </option>
-                  <option name="Online Wallet" value="Online Wallet">
-                    Online Wallet
-                  </option>
-                </Form.Control>
-              </Form.Group>
-              <hr />
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p onChange={(e) => setGross(e.target.value)}>
-                  <h6>Subtotal</h6>
-                  {subtotal.toFixed(2)}
-                </p>
-                <p onChange={(e) => setTax(e.target.value)}>
-                  <h6>Tax</h6>
-                  {tax_amt}
-                </p>
-                <p onChange={(e) => setTotal(e.target.value)}>
-                  <h6>Total</h6>
-                  {grand_total}
-                </p>
+                  {cartItems.map((prod) => (
+                    <tr key={prod.id} style={{ marginRight: "1em" }}>
+                      <td>{titleCase(prod.name)}</td>
+                      <td>{prod.price}</td>
+                      <td>{prod.quantity}</td>
+                    </tr>
+                  ))}
+                </table>
               </div>
-            </Form>
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Customer Name</Form.Label>
+                  <Form.Control
+                    type="name"
+                    placeholder="Enter Customer Name"
+                    name="customerName"
+                    onChange={(e) => setCustname(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Customer Number</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Mobile Number"
+                    name="customerNumber"
+                    onChange={(e) => setCustnumber(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Payment Mode</Form.Label>
+                  <Form.Control
+                    as="select"
+                    placeholder="Payment Mode"
+                    name="paymentMethod"
+                    onChange={(e) => setPaymentmode(e.target.value)}
+                  >
+                    <option name="Cash" value="Cash">
+                      Cash
+                    </option>
+                    <option name="Card" value="Card">
+                      Card
+                    </option>
+                    <option name="Online Wallet" value="Online Wallet">
+                      Online Wallet
+                    </option>
+                  </Form.Control>
+                </Form.Group>
+                <hr />
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <p onChange={(e) => setGross(e.target.value)}>
+                    <h6>Subtotal</h6>
+                    {subtotal.toFixed(2)}
+                  </p>
+                  <p onChange={(e) => setTax(e.target.value)}>
+                    <h6>Tax</h6>
+                    {tax_amt}
+                  </p>
+                  <p onChange={(e) => setTotal(e.target.value)}>
+                    <h6>Total</h6>
+                    {grand_total}
+                  </p>
+                </div>
+              </Form>
+            </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleSubmit}>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              style={{ backgroundColor: "#A084DC", border: 0 }}
+            >
               Generate
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handlePrint}
+              style={{ backgroundColor: "#A084DC", border: 0 }}
+            >
+              Print
             </Button>
           </Modal.Footer>
         </Modal>

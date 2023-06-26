@@ -4,6 +4,7 @@ import "./display.scss";
 import Button from "react-bootstrap/esm/Button";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import titleCase from "../../util/titleCase";
 
 const DisplayProduct = () => {
   const [itemData, setItemData] = useState([]);
@@ -86,9 +87,9 @@ const DisplayProduct = () => {
               {currentBills && currentBills.length !== 0 ? (
                 currentBills.map((prod, i) => (
                   <tr key={i}>
-                    <td>{prod.name}</td>
+                    <td>{titleCase(prod.name)}</td>
                     <td>{prod.price}</td>
-                    <td>{prod.category}</td>
+                    <td>{titleCase(prod.category)}</td>
                     <td>
                       <img
                         src={prod.image}
@@ -148,9 +149,18 @@ const DisplayProduct = () => {
             activeClassName={"active"}
           />
         </div>
-        <span style={{ marginLeft: "87.3rem" }}>
+        <span style={{ marginLeft: "84.4rem" }}>
           <Link to="/add">
-            <Button>Add Product</Button>
+            <Button
+              style={{
+                width: "10rem",
+                height: "2.7rem",
+                backgroundColor: "#A084DC",
+                border: 0,
+              }}
+            >
+              Add Product
+            </Button>
           </Link>
         </span>
       </div>

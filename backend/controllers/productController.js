@@ -17,10 +17,7 @@ exports.addProduct = async (req, res) => {
 
 exports.getProduct = async (req, res) => {
   try {
-    const limitValue = 6;
-    const skipValue = 0;
-
-    const item = await Product.find().limit(limitValue).skip(skipValue);
+    const item = await Product.find();
     res.status(200).json({
       item,
     });
